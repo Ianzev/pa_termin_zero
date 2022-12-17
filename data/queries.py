@@ -5,9 +5,13 @@ from psycopg2 import sql
 def get_shows():
     return data_manager.execute_select('SELECT id, title FROM shows;')
 
+def get_actors():
+    return data_manager.execute_select(
+        """SELECT id, name FROM actors ORDER BY name LIMIT 20;""")
+
 
 def get_show_count():
-    return data_manager.execute_select('SELECT count(*) FROM shows;')
+    return data_manager.execute_select("SELECT count(*) FROM shows;")
 
 
 def get_shows_limited(order_by="rating", order="DESC", limit=0, offset=0):
@@ -76,4 +80,11 @@ def get_show_seasons(id):
         FROM shows
         JOIN seasons ON shows.id = seasons.show_id
         WHERE shows.id = %(id)s;
+    """, {"id": id})
+
+def get_actor_roles():
+    return data_manager.execute_select("""
+        SELECT show_characters.actor_id, shows.title, shows.id
+        FROM show_characters
+        INNER JOIN shows ON show_id = shows.id;
     """, {"id": id})

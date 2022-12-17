@@ -13,6 +13,12 @@ def index():
     shows = queries.get_shows()
     return render_template('index.html', shows=shows)
 
+@app.route('/actors')
+def actors():
+    actors = queries.get_actors()
+    roles= queries.get_actor_roles()
+    return render_template('actors.html', actors=actors, roles=roles)
+
 
 @app.route('/design')
 def design():
